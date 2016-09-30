@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,37 +40,43 @@ import java.util.Map;
  */
 public class LoginActivity extends AppCompatActivity {
     ProgressDialog progress;
-    EditText username,password;
+    EditText username, password;
     Button login;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         username = (EditText) this.findViewById(R.id.rollno);
         password = (EditText) this.findViewById(R.id.password);
         login = (Button) this.findViewById(R.id.loginButton);
+
         String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         String name = Utils.getprefString(UtilStrings.NAME, this);
-        if(roll_no != "" && name != ""){
+        if (roll_no != "" && name != "") {
             Intent downloadIntent;
             downloadIntent = new Intent(getBaseContext(), MainActivity.class);
             startActivity(downloadIntent);
         }
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username.getText().toString().trim().length() > 0&&password.getText().toString().trim().length()>0){
-                    if(Utils.isNetworkAvailable(getBaseContext())){
+                if (username.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0) {
+                    if (Utils.isNetworkAvailable(getBaseContext())) {
                         progress = new ProgressDialog(LoginActivity.this);
                         progress.setCancelable(false);
-                        progress.setMessage("Logging In...");
+                        progress.setMessage("Logging in...");
                         progress.show();
                         PlacementLdaplogin(getBaseContext());
-                    }else {
+                    } else {
                         MakeSnSnackbar("No internet connection");
                     }
 
-                }else{
+                } else {
                     MakeSnSnackbar("Enter your username and password");
                 }
 
@@ -106,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         //responseBody = responseBody.replaceAll("\\s", "");
                         try {
-                            responseJson[0] =new JSONObject(responseBody);
+                            responseJson[0] = new JSONObject(responseBody);
                             success[0] = responseJson[0].getInt("success");
                             message[0] = responseJson[0].getString("message");
 
@@ -115,12 +122,12 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
 
-                        if (success[0]==1) {
+                        if (success[0] == 1) {
                             JSONObject jsonResultObjuct = null;
                             try {
                                 jsonResultObjuct = responseJson[0].getJSONArray("result").getJSONObject(0);
-                                DisplayName[0] =jsonResultObjuct.getString("fullname");
-                                Hostel[0] =jsonResultObjuct.getString("hostel");
+                                DisplayName[0] = jsonResultObjuct.getString("fullname");
+                                Hostel[0] = jsonResultObjuct.getString("hostel");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -129,13 +136,13 @@ public class LoginActivity extends AppCompatActivity {
                             Intent downloadIntent;
                             downloadIntent = new Intent(getBaseContext(), MainActivity.class);
                             startActivity(downloadIntent);
-                            Utils.saveprefString(UtilStrings.NAME,DisplayName[0], getBaseContext());
-                            Utils.saveprefString(UtilStrings.HOSTEl,  Hostel[0], getBaseContext());
+                            Utils.saveprefString(UtilStrings.NAME, DisplayName[0], getBaseContext());
+                            Utils.saveprefString(UtilStrings.HOSTEl, Hostel[0], getBaseContext());
                             Utils.saveprefString(UtilStrings.ROLLNO, username.getText().toString().toUpperCase(), getBaseContext());
                             Utils.saveprefBool(UtilStrings.LOGEDIN, true, context);
 
                             finish();
-                        } else if (success[0]==0) {
+                        } else if (success[0] == 0) {
                             MakeSnSnackbar(message[0]);
                             Log.d("invalid login", responseBody + "Error connecting to server !!");
                             Utils.clearpref(context);
@@ -168,9 +175,9 @@ public class LoginActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void MakeSnSnackbar(String text){
+    public void MakeSnSnackbar(String text) {
         hideKeyboard();
-        Snackbar snack=Snackbar.make((LinearLayout) findViewById(R.id.container), text, Snackbar.LENGTH_LONG);
+        Snackbar snack = Snackbar.make((LinearLayout) findViewById(R.id.container), text, Snackbar.LENGTH_LONG);
         ViewGroup group = (ViewGroup) snack.getView();
         group.setBackgroundColor(Color.WHITE);
         for (int i = 0; i < group.getChildCount(); i++) {
@@ -178,11 +185,11 @@ public class LoginActivity extends AppCompatActivity {
             if (v instanceof TextView) {
                 TextView t = (TextView) v;
                 t.setTextColor(Color.RED);
-                t.setTextSize(17);
             }
         }
         snack.show();
     }
+
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();

@@ -1,59 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Activities.ComplaintActivity">
 
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <EditText
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tit"
-            android:hint="Title"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="106dp" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <EditText
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/scroll3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activities.ComplaintActivity">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:hint="Description"
-            android:id="@+id/desc"
-            android:onClick="onPostClick()"
-            android:layout_below="@+id/tit"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="77dp" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="58dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="MESS"
-            android:id="@+id/typeType"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/typeType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Mess"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="RR"
-            android:id="@+id/typename"
-            android:layout_below="@+id/typeType"
-            android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/typename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="4dp"
+                android:text="Raja Rajeshwari"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send"
-            android:id="@+id/postComplaint"
-            android:onClick="onPostClick"
-            android:layout_below="@+id/desc"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="22dp"
-            android:layout_marginTop="96dp" />
-    </RelativeLayout>
-</LinearLayout>
+
+            <EditText
+                android:id="@+id/tit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:hint="Title"
+                android:inputType="textEmailSubject"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
+
+            <EditText
+                android:id="@+id/desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:gravity="top"
+                android:hint="Description"
+                android:minLines="4"
+                android:inputType="textMultiLine"
+                android:onClick="onPostClick()"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="MESS"-->
+            <!--android:id="@+id/textView"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
+
+            <Button
+                android:id="@+id/postComplaint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorAccent"
+                android:onClick="onPostClick"
+                android:text="Send"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>
+

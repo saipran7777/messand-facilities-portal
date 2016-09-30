@@ -21,64 +21,65 @@ import java.util.List;
 /**
  * Created by sai_praneeth7777 on 13-Jun-16.
  */
-public class AdapterClass extends ArrayAdapter{
-    List list= new ArrayList<ObjectClass>();
-     public AdapterClass(Context context, int resource) {
-            super(context, resource);
-        }
-        public void add(ObjectClass object){
-            super.add(object);
-            list.add(object);
-        }
+public class AdapterClass extends ArrayAdapter {
+    List list = new ArrayList<ObjectClass>();
 
-        @Override
-        public int getCount() {
-            return list.size();
-        }
+    public AdapterClass(Context context, int resource) {
+        super(context, resource);
+    }
 
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
+    public void add(ObjectClass object) {
+        super.add(object);
+        list.add(object);
+    }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row;
-            row= convertView;
-            final contentHolder contentHolder;
+    @Override
+    public int getCount() {
+        return list.size();
+    }
 
-            if(row == null){
-                LayoutInflater layoutInflater =(LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                row = layoutInflater.inflate(R.layout.listrow,parent,false);
-                contentHolder = new contentHolder();
-                contentHolder.txname = (TextView) row.findViewById(R.id.mess);
-                    final Button btn = (Button)row.findViewById(R.id.mess);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            Intent i = new Intent(v.getContext(),ComplaintActivity.class);
-                            i.putExtra("name",btn.getText().toString());
-                            i.putExtra("id",contentHolder.txid);
-                            i.putExtra("type",contentHolder.txtype);
-                            v.getContext().startActivity(i);
-                            Toast.makeText(v.getContext(),btn.getText().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                row.setTag(contentHolder);
-            }
-            else {
-                contentHolder = (contentHolder) row.getTag();
-            }
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
 
-            ObjectClass content=(ObjectClass) this.getItem(position);
-            contentHolder.txname.setText(content.getName());
-            contentHolder.txid = content.getId();
-            contentHolder.txtype = content.getType();
-            return row;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View row;
+        row = convertView;
+        final contentHolder contentHolder;
+
+        if (row == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = layoutInflater.inflate(R.layout.listrow, parent, false);
+            contentHolder = new contentHolder();
+            contentHolder.txname = (TextView) row.findViewById(R.id.mess);
+            final TextView btn = (TextView) row.findViewById(R.id.mess);
+            btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), ComplaintActivity.class);
+                    i.putExtra("name", btn.getText().toString());
+                    i.putExtra("id", contentHolder.txid);
+                    i.putExtra("type", contentHolder.txtype);
+                    v.getContext().startActivity(i);
+                    Toast.makeText(v.getContext(), btn.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            row.setTag(contentHolder);
+        } else {
+            contentHolder = (contentHolder) row.getTag();
         }
 
-        static class contentHolder{
-            TextView txname;
-            String txid ;
-            String txtype;
-        }
+        ObjectClass content = (ObjectClass) this.getItem(position);
+        contentHolder.txname.setText(content.getName());
+        contentHolder.txid = content.getId();
+        contentHolder.txtype = content.getType();
+        return row;
+    }
+
+    static class contentHolder {
+        TextView txname;
+        String txid;
+        String txtype;
+    }
 }

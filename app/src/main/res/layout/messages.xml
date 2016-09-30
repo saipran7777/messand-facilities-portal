@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-<ListView
+    <ListView
         android:id="@+id/list_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/listFooter"
         android:layout_alignParentTop="true"
-        android:transcriptMode="alwaysScroll"
-        android:divider="@null" />
+        android:divider="@null"
+        android:transcriptMode="alwaysScroll" />
 
     <LinearLayout
         android:id="@+id/listFooter"
@@ -23,25 +23,25 @@
             android:id="@+id/messageInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:inputType="textMultiLine"
-            android:background="#bdc3c7"
-            android:minHeight="40dp"
-            android:layout_marginLeft="10dp"
+            android:background="@color/colorPrimaryLight"
             android:hint="Type a message"
-            android:paddingLeft="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:inputType="textMultiLine"
+            android:minHeight="48dp"
+            android:paddingLeft="8dp" />
 
         <ImageButton
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_send"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/bg_send"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:minHeight="40dp"
-            android:minWidth="40dp"/>
+            android:minHeight="48dp"
+            android:minWidth="48dp"
+            android:src="@drawable/ic_send_white_24dp" />
     </LinearLayout>
 
 

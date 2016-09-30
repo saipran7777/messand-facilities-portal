@@ -3,6 +3,8 @@ package com.example.sai_praneeth7777.hasportal.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +31,10 @@ ListView listView1;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar4);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
         String type = i.getStringExtra("type");
@@ -97,7 +103,16 @@ ListView listView1;
 //          Toast.makeText(ListActivity.this,bt.getText().toString(),Toast.LENGTH_SHORT).show();
 //      }
 //    };
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+        case android.R.id.home:
+            onBackPressed();
+            return true;
+    }
 
+    return super.onOptionsItemSelected(item);
+}
 
 
 }
