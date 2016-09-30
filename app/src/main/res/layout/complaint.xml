@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tit"
+            android:hint="Title"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="106dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Description"
+            android:id="@+id/desc"
+            android:onClick="onPostClick()"
+            android:layout_below="@+id/tit"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="77dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="MESS"
+            android:id="@+id/typeType"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="RR"
+            android:id="@+id/typename"
+            android:layout_below="@+id/typeType"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/postComplaint"
+            android:onClick="onPostClick"
+            android:layout_below="@+id/desc"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="22dp"
+            android:layout_marginTop="96dp" />
+    </RelativeLayout>
+</LinearLayout>
