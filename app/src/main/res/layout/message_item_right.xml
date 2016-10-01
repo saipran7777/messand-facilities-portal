@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:gravity="right"
     android:orientation="vertical"
-    android:paddingBottom="4dp"
     android:paddingRight="8dp"
     android:paddingTop="4dp">
 
@@ -14,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="72dp"
         android:background="@drawable/bg_msg_you"
+        android:text="message"
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -21,9 +21,9 @@
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="horizontal">
 
@@ -31,7 +31,10 @@
             android:id="@+id/lblMsgYou"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:text="roll number"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp"
             android:textStyle="italic" />
@@ -40,7 +43,10 @@
             android:id="@+id/lblMsgDateright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:text="time"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp"
             android:textStyle="italic" />

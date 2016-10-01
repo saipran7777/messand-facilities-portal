@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +53,11 @@ public class MessageChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messages);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar6);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         Intent i = getIntent();
         final String thread_id = i.getStringExtra("thread_id");
         setThreadId(thread_id);
@@ -73,6 +79,7 @@ public class MessageChatActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -87,33 +94,33 @@ public class MessageChatActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.complaint_resolve:
+            case R.id.complaint_resolve: {
                 RequestQueue queue = Volley.newRequestQueue(this);
-                final String url =  getString(R.string.url_complaint_resolve);
+                final String url = getString(R.string.url_complaint_resolve);
                 final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
                 final String thread_id = getThreadId();
-                Toast.makeText(MessageChatActivity.this,thread_id,Toast.LENGTH_SHORT).show();
+                Toast.makeText(MessageChatActivity.this, thread_id, Toast.LENGTH_SHORT).show();
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 // Display the first 500 characters of the response string.
-                                Toast.makeText(MessageChatActivity.this,response.toString(),Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(MessageChatActivity.this,ThreadActivity.class);
+                                Toast.makeText(MessageChatActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MessageChatActivity.this, ThreadActivity.class);
                                 startActivity(intent);
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MessageChatActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(MessageChatActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("thread_id",thread_id);
-                        params.put("roll_no",roll_no);
+                        params.put("thread_id", thread_id);
+                        params.put("roll_no", roll_no);
                         return params;
                     }
                 };
@@ -128,38 +135,44 @@ public class MessageChatActivity extends AppCompatActivity {
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                 finish();
+                break;
+            }
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
         //noinspection SimplifiableIfStatement
-
+        return super.onOptionsItemSelected(item);
     }
+
     private void fetchMessages(final String thread_id) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url =  getString(R.string.url_get_messages);
+        final String url = getString(R.string.url_get_messages);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        Toast.makeText(MessageChatActivity.this,response.toString(),Toast.LENGTH_SHORT).show();
-                        content_adapter = new ChatAdapter(MessageChatActivity.this,R.layout.messages);
+                        Toast.makeText(MessageChatActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                        content_adapter = new ChatAdapter(MessageChatActivity.this, R.layout.messages);
                         listView = (ListView) findViewById(R.id.list_message);
                         //  listView.setOnItemClickListener(new ListAction());
                         listView.setAdapter(content_adapter);
 
                         try {
                             arr = new JSONArray(response.toString());
-                            String subject,user,date,time,body,thread_id;
-                            for (int i=0;i<arr.length();i++){
+                            String subject, user, date, time, body, thread_id;
+                            for (int i = 0; i < arr.length(); i++) {
                                 obj = arr.getJSONObject(i);
                                 body = obj.getString("body");
                                 date = obj.getString("date");
                                 time = obj.getString("time");
                                 user = obj.getString("user");
-                                ChatObject content= new ChatObject(body,time,date,user);
+                                ChatObject content = new ChatObject(body, time, date, user);
                                 content_adapter.add(content);
                             }
 
@@ -171,13 +184,13 @@ public class MessageChatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MessageChatActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MessageChatActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("thread_id",thread_id);
+                params.put("thread_id", thread_id);
                 return params;
             }
         };
@@ -193,12 +206,12 @@ public class MessageChatActivity extends AppCompatActivity {
     }
 
 
-    private void sendMessage(final String message, final String thread_id){
-     //   getActionBar().hide();
-        Toast.makeText(MessageChatActivity.this,message,Toast.LENGTH_SHORT).show();
+    private void sendMessage(final String message, final String thread_id) {
+        //   getActionBar().hide();
+        Toast.makeText(MessageChatActivity.this, message, Toast.LENGTH_SHORT).show();
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url =  getString(R.string.url_send_message);
+        final String url = getString(R.string.url_send_message);
         final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -212,15 +225,15 @@ public class MessageChatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MessageChatActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MessageChatActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("thread_id",thread_id);
-                params.put("message",message);
-                params.put("roll_no",roll_no);
+                params.put("thread_id", thread_id);
+                params.put("message", message);
+                params.put("roll_no", roll_no);
                 return params;
             }
         };

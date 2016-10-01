@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -45,18 +47,15 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.threadlist);
         getContent();
+        setContentView(R.layout.threadlist);
 
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar5);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(ThreadActivity.this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(ThreadActivity.this,MainActivity.class);
-        startActivity(i);
     }
 
     JSONObject obj;
@@ -68,7 +67,7 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
         final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url =  getString(R.string.url_get_threads);
+        final String url = getString(R.string.url_get_threads);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -76,27 +75,21 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         //Toast.makeText(ThreadActivity.this,response.toString(),Toast.LENGTH_SHORT).show();
-                        content_adapter = new ThreadAdapter(ThreadActivity.this,R.layout.threadlistrow);
+                        TextView tvNoComplaints = (TextView) findViewById(R.id.tv_no_complaints);
+                        if (response.toString() == null) {
+                            tvNoComplaints.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNoComplaints.setVisibility(View.GONE);
+                        }
+                        content_adapter = new ThreadAdapter(ThreadActivity.this, R.layout.threadlistrow);
                         listView = (ListView) findViewById(R.id.threadList12);
                         //  listView.setOnItemClickListener(new ListAction());
-
-                        listView.setAdapter(content_adapter);
-
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-                                TextView textViewId = (TextView) view.findViewById(R.id.thread_id);
-                                String thread_id = textViewId.getText().toString();
-                                //Toast.makeText(view.getContext(),text,Toast.LENGTH_SHORT).show();
-                                getThreadMessages(thread_id);
-                            }});
-
                         try {
                             arr = new JSONArray(response.toString());
-                            String subject,user,date,time,body,thread_id,messName;
+                            String subject, user, date, time, body, thread_id, messName;
                             int solved;
                             int solved_by;
-                            for (int i=0;i<arr.length();i++){
+                            for (int i = 0; i < arr.length(); i++) {
                                 obj = arr.getJSONObject(i);
                                 subject = obj.getString("subject");
                                 body = obj.getString("body");
@@ -108,15 +101,27 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
 //                                solved = obj.getString("is_resolved");
 //                                solved_by = obj.getString("resolved_by");
                                 solved = 0;
-                                solved_by =1;
-                                //Toast.makeText(ThreadActivity.this,solved+":::"+solved_by,Toast.LENGTH_SHORT).show();
-                                ThreadObject content= new ThreadObject(subject,body,date,time,user,thread_id,messName,solved,solved_by);
+                                solved_by = 1;
+                                Toast.makeText(ThreadActivity.this, solved + ":::" + solved_by, Toast.LENGTH_SHORT).show();
+                                ThreadObject content = new ThreadObject(subject, body, date, time, user, thread_id, messName, solved, solved_by);
                                 content_adapter.add(content);
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        listView.setAdapter(content_adapter);
+
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            public void onItemClick(AdapterView<?> parent, View view,
+                                                    int position, long id) {
+                                TextView textViewId = (TextView) view.findViewById(R.id.thread_id);
+                                String thread_id = textViewId.getText().toString();
+                                //Toast.makeText(view.getContext(),text,Toast.LENGTH_SHORT).show();
+                                getThreadMessages(thread_id);
+                            }
+                        });
+
 
                     }
 
@@ -124,20 +129,20 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ThreadActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(ThreadActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("rollno",roll_no);
+                params.put("rollno", roll_no);
                 return params;
             }
         };
         // Add the request to the RequestQueue.
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-        
+
         int MY_SOCKET_TIMEOUT_MS = 10000;
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
@@ -146,8 +151,8 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
     }
 
     private void getThreadMessages(final String thread_id) {
-        Intent i = new Intent(this,MessageChatActivity.class);
-        i.putExtra("thread_id",thread_id);
+        Intent i = new Intent(this, MessageChatActivity.class);
+        i.putExtra("thread_id", thread_id);
         startActivity(i);
     }
 
@@ -157,10 +162,12 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
         swipeRefreshLayout.setRefreshing(true);
         refreshList();
     }
-    public void refreshList(){
+
+    public void refreshList() {
 
         new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
@@ -168,5 +175,13 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
             }
         }, 3000);
 
+    }
+
+    @Override
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(ThreadActivity.this, MainActivity.class);
+        startActivity(i);
     }
 }

@@ -1,12 +1,16 @@
 package com.example.sai_praneeth7777.hasportal.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +31,9 @@ import java.util.Map;
 /**
  * Created by sai_praneeth7777 on 15-Jun-16.
  */
-public class ComplaintActivity extends AppCompatActivity{
-    private TextView subject;
-    private TextView body,header;
+public class ComplaintActivity extends AppCompatActivity {
+    private EditText subject, body;
+    private TextView header;
     private String id;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +53,35 @@ public class ComplaintActivity extends AppCompatActivity{
         setId(id);
     }
 
-    private void setHead(String name,String type) {
-        TextView txt= (TextView) findViewById(R.id.typename);
+    private void setHead(String name, String type) {
+        TextView txt = (TextView) findViewById(R.id.typename);
         txt.setText(name);
-        TextView head =(TextView)findViewById(R.id.typeType);
+        TextView head = (TextView) findViewById(R.id.typeType);
         head.setText(type);
     }
 
-    public void onPostClick(View v){
-        subject=(TextView)findViewById(R.id.tit);
-        body=(TextView)findViewById(R.id.desc);
-        header =(TextView)findViewById(R.id.typename);
+    public void onPostClick(View v) {
+        subject = (EditText) findViewById(R.id.tit);
+        body = (EditText) findViewById(R.id.desc);
+        header = (TextView) findViewById(R.id.typename);
         //Toast.makeText(ComplaintActivity.this,subject.toString().trim(),Toast.LENGTH_SHORT);
 
         ProgressDialog progress = new ProgressDialog(this);
         progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
+        progress.setMessage("Please wait...");
         progress.setCancelable(false);
         progress.show();
 
-        postMail(subject.getText().toString(),body.getText().toString(),header.getText().toString());
-
+        int isEmptyInt = checkIfEmpty(subject.getText().toString(), body.getText().toString());
+        if (isEmptyInt == 0) {
+            subject.setHintTextColor(Color.parseColor("#F44336"));
+            body.setHintTextColor(Color.parseColor("#F44336"));
+        } else if (isEmptyInt == 1)
+            subject.setHintTextColor(Color.parseColor("#F44336"));
+        else if (isEmptyInt == 2)
+            body.setHintTextColor(Color.parseColor("#F44336"));
+        else
+            postMail(subject.getText().toString(), body.getText().toString(), header.getText().toString());
 
         // To dismiss the dialog
         progress.dismiss();
@@ -91,14 +103,14 @@ public class ComplaintActivity extends AppCompatActivity{
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         //Toast.makeText(ComplaintActivity.this,response.toString(),Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(ComplaintActivity.this,ThreadActivity.class);
+                        Intent i = new Intent(ComplaintActivity.this, ThreadActivity.class);
                         startActivity(i);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ComplaintActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(ComplaintActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -106,9 +118,9 @@ public class ComplaintActivity extends AppCompatActivity{
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("sub", sub);
                 params.put("body", body);
-                params.put("id",id);
-                params.put("name",name);
-                params.put("roll_no",roll_no);
+                params.put("id", id);
+                params.put("name", name);
+                params.put("roll_no", roll_no);
                 return params;
             }
         };
@@ -122,6 +134,7 @@ public class ComplaintActivity extends AppCompatActivity{
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -139,5 +152,12 @@ public class ComplaintActivity extends AppCompatActivity{
 
     public String getId() {
         return id;
+    }
+
+    private int checkIfEmpty(String subjectString, String bodyString) {
+        if (subjectString.length() == 0 && bodyString.length() == 0) return 0;
+        if (subjectString.length() == 0) return 1;
+        if (bodyString.length() == 0) return 2;
+        return 3;
     }
 }
