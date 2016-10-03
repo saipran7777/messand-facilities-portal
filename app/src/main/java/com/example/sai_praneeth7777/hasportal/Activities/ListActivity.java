@@ -56,7 +56,7 @@ ListView listView1;
     // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
             final String url = getString(R.string.url_fetch_list);
-            Toast.makeText(this,type,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,type,Toast.LENGTH_SHORT).show();
     // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url+type,
                     new Response.Listener<String>() {

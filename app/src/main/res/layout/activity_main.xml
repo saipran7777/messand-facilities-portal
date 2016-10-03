@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_himalaya_temp" />
+                android:src="@drawable/himalaya" />
 
             <TextView
                 android:id="@+id/header_name"
@@ -48,7 +48,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="left"
-                android:text="Welcome Sathwik Chadaga P!"
+                android:text="Welcome Devunuri Sai Praneeth!"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </RelativeLayout>
@@ -146,6 +146,22 @@
                 android:text="My Complaints"
                 android:textColor="#000000"
                 android:textSize="20sp" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:text="Copyrights &#169; Institute Mobops "
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </RelativeLayout>
 
     </LinearLayout>

@@ -6,10 +6,11 @@ package com.example.sai_praneeth7777.hasportal.Objects;
 public class ThreadObject {
     private String subject,body,date,time,user,id;
     private String messName;
-    private int solved,solved_by;
+    private String solved;
+    private String solved_by;
 
 
-    public ThreadObject(String subject, String body, String date, String time, String user,String thread_id,String messName, int solved, int solved_by){
+    public ThreadObject(String subject, String body, String date, String time, String user, String thread_id, String messName, String solved, String solved_by){
         this.setSubject(subject);
         this.setBody(body);
         this.setUser(user);
@@ -63,13 +64,13 @@ public class ThreadObject {
 
     public void setId(String id) {this.id = id;}
 
-    public void setSolved(int solved) {this.solved = solved;}
+    public void setSolved(String solved) {this.solved = solved;}
 
-    public void setSolved_By(int solved_by) {this.solved_by = solved_by;}
+    public void setSolved_By(String solved_by) {this.solved_by = solved_by;}
 
-    public int getSolved(){return solved;}
+    public String getSolved(){return solved;}
 
-    public int getSolved_by() {return solved_by;}
+    public String getSolved_by() {return solved_by;}
 
     public String getId(){return id;}
 

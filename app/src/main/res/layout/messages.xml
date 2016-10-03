@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Activities.ListActivity">
+    tools:context=".Activities.MessageChatActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -26,13 +26,26 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="60dp"
         android:layout_height="fill_parent">
+        <TextView
+            android:id="@+id/complaint_resolved"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:text="Complaint is Resolved by - CE14B016" />
 
         <ListView
             android:id="@+id/list_message"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/listFooter"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/complaint_resolved"
+            android:layout_marginTop="5dp"
             android:divider="@null"
             android:transcriptMode="alwaysScroll" />
 

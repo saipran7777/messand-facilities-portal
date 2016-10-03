@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +43,13 @@ import java.util.Map;
 public class MessageChatActivity extends AppCompatActivity {
 
     ImageView send_message;
-    TextView message;
+    TextView message,complaint;
 
     JSONObject obj;
     JSONArray arr;
     ChatAdapter content_adapter;
     ListView listView;
+    LinearLayout textLayout;
     private String threadId;
 
 
@@ -57,9 +61,22 @@ public class MessageChatActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        TextView complaint = (TextView)findViewById(R.id.complaint_resolved);
+        LinearLayout textLayout = (LinearLayout)findViewById(R.id.listFooter);
 
         Intent i = getIntent();
         final String thread_id = i.getStringExtra("thread_id");
+        final String solved = i.getStringExtra("solved");
+        final String solvedBy = i.getStringExtra("solvedBy");
+        //Toast.makeText(MessageChatActivity.this,"Solved-"+solved,Toast.LENGTH_LONG).show();
+
+        if (Integer.valueOf(solved) == 0){
+            complaint.setVisibility(View.GONE);
+        }
+        else{
+            textLayout.setVisibility(View.GONE);
+            complaint.setText("Complaint is resolved by - "+ solvedBy);
+        }
         setThreadId(thread_id);
         fetchMessages(thread_id);
 
@@ -67,14 +84,20 @@ public class MessageChatActivity extends AppCompatActivity {
         send_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                message = (TextView) findViewById(R.id.messageInput);
+                message = (EditText) findViewById(R.id.messageInput);
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
 
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-                sendMessage(message.getText().toString(), thread_id);
-                message.setText("");
+                if(TextUtils.isEmpty(message.getText().toString())) {
+                    message.setError("Cannot be Empty!");
+                    return;
+                }
+                else {
+                    sendMessage(message.getText().toString(), thread_id);
+                    message.setText("");
+                }
                 ;
             }
         });
@@ -99,7 +122,7 @@ public class MessageChatActivity extends AppCompatActivity {
                 final String url = getString(R.string.url_complaint_resolve);
                 final String roll_no = Utils.getprefString(UtilStrings.ROLLNO, this);
                 final String thread_id = getThreadId();
-                Toast.makeText(MessageChatActivity.this, thread_id, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MessageChatActivity.this,"Thread id"+thread_id+"Roll no"+roll_no, Toast.LENGTH_LONG).show();
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
@@ -157,7 +180,7 @@ public class MessageChatActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        Toast.makeText(MessageChatActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MessageChatActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                         content_adapter = new ChatAdapter(MessageChatActivity.this, R.layout.messages);
                         listView = (ListView) findViewById(R.id.list_message);
                         //  listView.setOnItemClickListener(new ListAction());
@@ -208,7 +231,7 @@ public class MessageChatActivity extends AppCompatActivity {
 
     private void sendMessage(final String message, final String thread_id) {
         //   getActionBar().hide();
-        Toast.makeText(MessageChatActivity.this, message, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MessageChatActivity.this, message, Toast.LENGTH_SHORT).show();
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         final String url = getString(R.string.url_send_message);

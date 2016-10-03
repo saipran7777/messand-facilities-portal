@@ -20,7 +20,7 @@
 
     <!--width below is kept 0dp as weight is being used to set width automatically-->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/user_dp"
         android:layout_centerVertical="true"
@@ -43,7 +43,7 @@
             android:id="@+id/threadBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="4"
+            android:maxLines="2"
             android:text="Location"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textSize="16sp" />
@@ -52,7 +52,7 @@
             android:id="@+id/threadName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="4"
+            android:maxLines="2"
             android:text="Mess name"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textSize="16sp" />

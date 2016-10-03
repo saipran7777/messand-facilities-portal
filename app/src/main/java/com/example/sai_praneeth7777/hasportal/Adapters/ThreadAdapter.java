@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sai_praneeth7777.hasportal.Activities.ComplaintActivity;
+import com.example.sai_praneeth7777.hasportal.Activities.MessageChatActivity;
 import com.example.sai_praneeth7777.hasportal.Objects.ObjectClass;
 import com.example.sai_praneeth7777.hasportal.Objects.ThreadObject;
 import com.example.sai_praneeth7777.hasportal.R;
@@ -50,7 +51,7 @@ public class ThreadAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row;
         row= convertView;
-        contentHolder contentHolder;
+        final contentHolder contentHolder;
 
         if(row == null){
             LayoutInflater layoutInflater =(LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -64,6 +65,16 @@ public class ThreadAdapter extends ArrayAdapter {
             contentHolder.txmessname = (TextView)row.findViewById(R.id.threadName);
             contentHolder.txuser = (TextView) row.findViewById(R.id.threadUser);
             row.setTag(contentHolder);
+            row.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), MessageChatActivity.class);
+                    i.putExtra("thread_id", contentHolder.txthread_id.getText().toString());
+                    i.putExtra("solved", contentHolder.txsolved);
+                    i.putExtra("solvedBy", contentHolder.txsolvedBy);
+                    v.getContext().startActivity(i);
+                    //Toast.makeText(v.getContext(), btn.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         else {
             contentHolder = (contentHolder) row.getTag();
@@ -78,6 +89,8 @@ public class ThreadAdapter extends ArrayAdapter {
         contentHolder.txthread_id.setText(content.getId());
         contentHolder.txmessname.setText(content.getMessName());
         contentHolder.txuser.setText(content.getUser());
+        contentHolder.txsolved = content.getSolved();
+        contentHolder.txsolvedBy = content.getSolved_by();
         return row;
     }
 
@@ -89,5 +102,7 @@ public class ThreadAdapter extends ArrayAdapter {
         TextView txthread_id;
         TextView txmessname;
         TextView txuser;
+        String txsolved;
+        String txsolvedBy;
     }
 }

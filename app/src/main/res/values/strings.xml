@@ -11,5 +11,5 @@
     <string name="url_get_threads">https://students.iitm.ac.in/studentsapp/hasportal/threads.php</string>
     <string name="url_register_fcm">https://students.iitm.ac.in/studentsapp/hasportal/token_register.php</string>
     <string name="LoginURl">https://students.iitm.ac.in/studentsapp/login/index.php</string>
-    <string name="url_complaint_resolve">https://students.iitm.ac.in/studentsapp/hasportal/complaint_relsove.php</string>
+    <string name="url_complaint_resolve">https://students.iitm.ac.in/studentsapp/hasportal/complaint_resolved.php</string>
 </resources>

@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -21,15 +19,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sai_praneeth7777.hasportal.Adapters.AdapterClass;
 import com.example.sai_praneeth7777.hasportal.Adapters.ThreadAdapter;
-import com.example.sai_praneeth7777.hasportal.Objects.ObjectClass;
 import com.example.sai_praneeth7777.hasportal.Objects.ThreadObject;
 import com.example.sai_praneeth7777.hasportal.R;
 import com.example.sai_praneeth7777.hasportal.UtilStrings;
 import com.example.sai_praneeth7777.hasportal.Utils;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +37,8 @@ import java.util.Map;
  */
 public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeRefreshLayout;
+    private String solved;
+    private String solvedBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +83,8 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
                         try {
                             arr = new JSONArray(response.toString());
                             String subject, user, date, time, body, thread_id, messName;
-                            int solved;
-                            int solved_by;
+                            String solved;
+                            String solved_by;
                             for (int i = 0; i < arr.length(); i++) {
                                 obj = arr.getJSONObject(i);
                                 subject = obj.getString("subject");
@@ -98,11 +94,8 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
                                 time = obj.getString("time");
                                 thread_id = obj.getString("thread_id");
                                 messName = obj.getString("mess_name");
-//                                solved = obj.getString("is_resolved");
-//                                solved_by = obj.getString("resolved_by");
-                                solved = 0;
-                                solved_by = 1;
-                                Toast.makeText(ThreadActivity.this, solved + ":::" + solved_by, Toast.LENGTH_SHORT).show();
+                                solved = obj.getString("solved");
+                                solved_by = obj.getString("resolved_by");
                                 ThreadObject content = new ThreadObject(subject, body, date, time, user, thread_id, messName, solved, solved_by);
                                 content_adapter.add(content);
                             }
@@ -111,17 +104,6 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
                             e.printStackTrace();
                         }
                         listView.setAdapter(content_adapter);
-
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-                                TextView textViewId = (TextView) view.findViewById(R.id.thread_id);
-                                String thread_id = textViewId.getText().toString();
-                                //Toast.makeText(view.getContext(),text,Toast.LENGTH_SHORT).show();
-                                getThreadMessages(thread_id);
-                            }
-                        });
-
 
                     }
 
@@ -150,13 +132,6 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private void getThreadMessages(final String thread_id) {
-        Intent i = new Intent(this, MessageChatActivity.class);
-        i.putExtra("thread_id", thread_id);
-        startActivity(i);
-    }
-
-
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
@@ -183,5 +158,21 @@ public class ThreadActivity extends AppCompatActivity implements SwipeRefreshLay
         super.onBackPressed();
         Intent i = new Intent(ThreadActivity.this, MainActivity.class);
         startActivity(i);
+    }
+
+    public void setSolved(String solved) {
+        this.solved = solved;
+    }
+
+    public String getSolved() {
+        return solved;
+    }
+
+    public String getSolvedBy() {
+        return solvedBy;
+    }
+
+    public void setSolvedBy(String solvedBy) {
+        this.solvedBy = solvedBy;
     }
 }

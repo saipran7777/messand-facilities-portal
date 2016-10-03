@@ -48,7 +48,7 @@ public class ComplaintActivity extends AppCompatActivity {
         String name = i.getStringExtra("name");
         String type = i.getStringExtra("type");
         String id = i.getStringExtra("id");
-        Toast.makeText(ComplaintActivity.this, name + type + id, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ComplaintActivity.this, name + type + id, Toast.LENGTH_SHORT).show();
         setHead(name, type);
         setId(id);
     }
